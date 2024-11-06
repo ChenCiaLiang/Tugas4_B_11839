@@ -20,14 +20,14 @@ def scatter(model, model_name, data, new_point, features, color_scale, title):
         nearest_index = distances.argmin()
         new_cluster = clusters[nearest_index]
 
-    fig = px.scatter_3d(data, x='Avg_Credit_Limit', y='Total_Credit_Cards', z='Total_Visits_Online',
+    fig = px.scatter_3d(data, x='Avg_Credit_Limit', y='Total_Credit_Cards', z='Total_visits_online',
                         color=f"{model_name}_Cluster", title=title, color_continuous_scale=color_scale)
 
     fig.add_trace(
         go.Scatter3d(
             x=new_point['Avg_Credit_Limit'],
             y=new_point['Total_Credit_Cards'],
-            z=new_point['Total_Visits_Online'],
+            z=new_point['Total_visits_online'],
             mode='markers',
             marker=dict(size=10, color='red'),
             name='New Point'
@@ -65,19 +65,19 @@ if uploaded_file is not None:
             with open(path, 'rb') as f:
                 models[model_name] = pickle.load(f)
         else:
-            st.write(f"Model {model_name} tidak ditemukan di path : ", path)
+            st.write(f"Model {model_name} tidak ditemukan di path: {path}")
 
     avg_CL = st.sidebar.number_input("Average Credit Limit", 0, 100000)
     sum_CC = st.sidebar.number_input("Total Credit Cards", 0, 10)
     sum_VO = st.sidebar.number_input("Total Visits Online", 0, 10)
 
     if st.sidebar.button("Prediksi"):
-        features = ['Avg_Credit_Limit', 'Total_Credit_Cards', 'Total_Visits_Online']
+        features = ['Avg_Credit_Limit', 'Total_Credit_Cards', 'Total_visits_online']
 
         new_point = pd.DataFrame({
             'Avg_Credit_Limit': [avg_CL],
             'Total_Credit_Cards': [sum_CC],
-            'Total_Visits_Online': [sum_VO]
+            'Total_visits_online': [sum_VO]
         })
 
         cluster_method = [
